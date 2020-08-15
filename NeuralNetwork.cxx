@@ -128,7 +128,6 @@ void NeuralNetwork::Softmax(vec1D &lastLayer, vec1D const &beforeActF){
   for(int i = 0 ; i < (int)beforeActF.size() ; i++){
     denominator += std::exp(beforeActF[i] - *it_max);
   }
-
   for(int i = 0 ; i < (int)beforeActF.size() ; i++){
     double numerator = std::exp(beforeActF[i] - *it_max);
     if(numerator == 0) numerator = 1e-323;
@@ -586,10 +585,12 @@ double NeuralNetwork::DMSE(double y, double d){
 }
 
 double NeuralNetwork::DBCE(double y, double d){
+  if(y == 1) y = 0.9999999999999999;
   return -1 * ( d - y ) / ( y * ( 1 - y ) );
 }
 
 double NeuralNetwork::DCCE(double y, double d){
+  if(y == 1) y = 0.9999999999999999;
   return -1 * ( d - y ) / ( y * ( 1 - y ) );
 }
 
@@ -768,3 +769,4 @@ void NeuralNetwork::ReadWeightMatrix(std::string filename){
   
   std::cout << "Reading weight and bias parameters has been done successfully." << std::endl;
 }
+
